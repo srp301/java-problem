@@ -1,0 +1,51 @@
+/*
+求int型正整数在内存中存储时1的个数:
+输入一个int型的正整数，计算出该int型数据在内存中存储时1的个数。
+
+输入描述:
+ 输入一个整数（int类型）
+
+输出描述:
+ 这个数转换成2进制后，输出1的个数
+
+输入例子:
+5
+
+输出例子:
+2
+*/
+方法一：
+import java.util.*;
+public class Main{
+	public static void main(String[] args){
+		Scanner scan = new Scanner(System.in);
+		while(scan.hasNext()){
+			int a = scan.nextInt();
+            String s = Integer.toString(a,2);
+            //Integer.toString(int par1,int par2),par1表示要转成字符串的数字，par2表示要转成的进制表示
+            int num = 0;
+            for(int i = 0;i<s.length();i++){
+                if(s.charAt(i)=='1'){
+                    num++;
+                }
+            }
+            System.out.println(num);
+		}
+	}
+}
+方法二：
+import java.util.*;
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+        while (sc.hasNext()){
+            int n=sc.nextInt();
+            int count=0;
+            while (n!=0){
+                count++;
+                n=n&(n-1);
+            }
+            System.out.println(count);
+        }
+    }
+}
