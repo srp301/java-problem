@@ -1,0 +1,53 @@
+/*
+字串的连接最长路径查找
+给定n个字符串，请对n个字符串按照字典序排列。 
+输入描述:
+输入第一行为一个正整数n(1≤n≤1000),下面n行为n个字符串(字符串长度≤100),字符串中只含有大小写字母。
+
+输出描述:
+数据输出n行，输出结果为按照字典序排列的字符串。
+
+输入例子:
+9
+cap
+to
+cat
+card
+two
+too
+up
+boat
+boot
+
+输出例子:
+boat
+boot
+cap
+card
+cat
+to
+too
+two
+up
+*/
+import java.util.*;
+public class Main{
+	public static void main(String[] args){
+		Scanner scan = new Scanner(System.in);
+		while(scan.hasNext()){
+			int n = scan.nextInt();
+            String[] s = new String[n];
+            for(int i = 0;i < n;i++){
+                s[i] = scan.next();
+            }
+            Arrays.sort(s);
+            for(int i =0;i<s.length;i++){
+                System.out.println(s[i]);
+            }
+		}
+	}
+}
+/*
+   本题中在scan.nextInt()之后用scan.nextLine()的话会少一行，因为scan.nextInt()仅仅是把第一行的整数值读取了，在管道缓存中，
+还有换行符（enter），当在下面的nextLine（）首先是读取第一行的换行符前面的数据，就是null，所以读取的数据就会少一行
+*/
