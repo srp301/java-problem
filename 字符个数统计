@@ -1,0 +1,40 @@
+/*
+字符个数统计：
+编写一个函数，计算字符串中含有的不同字符的个数。字符在ACSII码范围内(0~127)。不在范围内的不作统计。
+
+输入描述:
+输入N个字符，字符在ACSII码范围内。
+
+输出描述:
+输出范围在(0~127)字符的个数。
+
+输入例子:
+abc
+
+输出例子:
+3
+*/
+import java.util.*;
+public class Main{
+	public static void main(String[] args){
+		Scanner scan = new Scanner(System.in);
+		while(scan.hasNext()){
+			String s = scan.nextLine();
+            int a[] = new int[128];
+            char[] c = s.toCharArray();
+            for(int i = 0;i<c.length;i++){
+                a[c[i]] = 1;
+            }
+            int len = 0;
+            for(int i = 0;i<a.length;i++){
+                if(a[i]==1){
+                    len++;
+                }
+            }
+            System.out.println(len);
+		}
+	}
+}
+/*
+关于ascii码请看：http://www.tuicool.com/articles/2Qbuiy
+*/
