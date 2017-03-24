@@ -1,0 +1,44 @@
+/*
+数字颠倒：
+描述：
+输入一个整数，将这个整数以字符串的形式逆序输出
+程序不考虑负数的情况，若数字含有0，则逆序形式也含有0，如输入为100，则输出为001
+
+输入描述:
+输入一个int整数
+
+输出描述:
+将这个整数以字符串的形式逆序输出
+
+输入例子:
+1516000
+
+输出例子:
+0006151
+*/
+方法一：
+import java.util.*;
+public class Main{
+	public static void main(String[] args){
+		Scanner scan = new Scanner(System.in);
+		while(scan.hasNext()){
+			String s = scan.nextLine();
+            char[] a = s.toCharArray();
+            for(int i = a.length-1;i>=0;i--){
+                System.out.print(a[i]);
+            }
+		}
+	}
+}
+方法二：
+import java.util.*;
+public class Main {
+    public static void main(String[] args){
+        Scanner scan = new Scanner(System.in);
+        String str = scan.nextLine();
+        StringBuffer sb = new StringBuffer(str);
+        sb.reverse();
+        System.out.println(sb.toString());
+    }
+ 
+}
