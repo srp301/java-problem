@@ -26,7 +26,7 @@ public class Main{
            System.out.println(erjinzhi);
        } 
     }
-}}
+}
 /*
 next()一定要读取到有效字符后才可以结束输入，对输入有效字符之前遇到的空格键、Tab键或Enter键等结束符，next()
 方法会自动将其去掉，只有在输入有效字符之后，next()方法才将其后输入的空格键、Tab键或Enter键等视为分隔符或结束符。
