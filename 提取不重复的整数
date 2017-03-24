@@ -33,3 +33,14 @@ public class Main{
 		}
 	}
 }
+/*
+public String replace(char oldChar,char newChar)
+返回一个新的字符串，它是通过用 newChar 替换此字符串中出现的所有 oldChar 而生成的。 如 果 oldChar 在此 String 对象表示的字符序列中没有出现，则返回对此 String 对象的引用。否则，创建一个新的 String 对象，用来表示与此 String 对象表示的字符序列相等的字符序列，除了每个出现的 oldChar 都被一个 newChar 替换之外。
+
+public String replaceAll(String regex,String replacement)使用给定的 replacement 字符串替换此字符串匹配给定的正则表达式的每个子字符串。此方法调用的 str.replaceAll(regex, repl) 形式产生与以下表达式完全相同的结果：
+Pattern.compile(regex).matcher(str).replaceAll(repl)
+参数：
+regex – 用来匹配此字符串的正则表达式
+返回：得到的 String
+抛出： PatternSyntaxException – 如果正则表达式的语法无效。
+*/
