@@ -1,0 +1,132 @@
+/*
+识别有效的IP地址和掩码并进行分类统:
+请解析IP地址和对应的掩码，进行分类识别。要求按照A/B/C/D/E类地址归类，不合法的地址和掩码单独归类。
+
+所有的IP地址划分为 A,B,C,D,E五类
+
+A类地址1.0.0.0~126.255.255.255;
+
+B类地址128.0.0.0~191.255.255.255;
+
+C类地址192.0.0.0~223.255.255.255;
+
+D类地址224.0.0.0~239.255.255.255；
+
+E类地址240.0.0.0~255.255.255.255
+
+私网IP范围是：
+
+10.0.0.0～10.255.255.255
+
+172.16.0.0～172.31.255.255
+
+192.168.0.0～192.168.255.255
+
+子网掩码为前面是连续的1，然后全是0。（例如：255.255.255.32就是一个非法的掩码）
+本题暂时默认以0开头的IP地址是合法的，比如0.1.1.2，是合法地址
+
+输入描述:
+多行字符串。每行一个IP地址和掩码，用~隔开。
+
+输出描述:
+统计A、B、C、D、E、错误IP地址或错误掩码、私有IP的个数，之间以空格隔开。
+
+输入例子:
+10.70.44.68~255.254.255.0
+1.0.0.1~255.0.0.0
+192.168.0.2~255.255.255.0
+19..0.~255.255.255.0
+
+输出例子:
+1 0 1 0 0 2 1
+*/
+import java.util.*;
+public class Main{
+	public static void main(String[] args){
+		Scanner scan = new Scanner(System.in);
+        int a = 0;
+        int b = 0;
+        int c = 0;
+        int d = 0;
+        int e = 0;
+        int falseip = 0;
+        int privateip = 0;
+		while(scan.hasNext()){
+			String s = scan.nextLine();
+            String[] s1 = s.split("~");
+            String ip = s1[0];
+            String subNetMask = s1[1];
+            //判断是否是合法ip
+            if(!(isValidIp(ip) && isValidIp(subNetMask))){
+                falseip++;
+                continue;
+            }
+            //判断是否是合法子网掩码
+            if(!isValidSubNetMask(subNetMask)){
+                falseip++;
+                continue;
+            }
+            //判断五类ip地址
+            String[] abcde = ip.split("\\.");
+            int snm1 = Integer.parseInt(abcde[0]);
+            if(snm1 <= 126 && snm1 >= 1){
+                a++;
+            }else if(snm1 >= 128 && snm1 <= 191){
+                b++;
+            }else if(snm1 >= 192 && snm1 <= 223){
+                c++;
+            }else if(snm1 >= 224 && snm1 <= 239){
+                d++;
+            }else if(snm1 >= 240 && snm1 <= 255){
+                e++;
+            }
+            //判断是否是私网IP地址
+            int snm2 = Integer.parseInt(abcde[1]);
+            if((snm1 == 10)|(snm1==172 && snm2 <= 31 && snm2 >= 16)|(snm1 == 192 && snm2 == 168)){
+                privateip++;
+            }
+		}
+        scan.close();
+        System.out.print(a+" "+b+" "+c+" "+d+" "+e+" "+falseip+" "+privateip+"");
+	}
+    public static boolean isValidIp(String ip){			//是否是合法ip
+        if(!ip.matches("^(\\d+)\\.(\\d+)\\.(\\d+)\\.(\\d+)$")){
+            return false;
+        }
+        String[] s = ip.split("\\.");
+        for(String s1 : s){
+            int a = Integer.parseInt(s1);
+            if(a<0|a>255){
+                return false;
+            }
+        }
+        return true;
+    }
+    public static boolean isValidSubNetMask(String subNetMask){	//是否是合法子网掩码
+        StringBuilder sb = new StringBuilder();
+        String[] num = subNetMask.split("\\.");
+        for(String a : num){
+            sb.append(binaryString(a));
+        }
+        String binary = sb.toString();
+        if(binary.indexOf("0")<binary.lastIndexOf("1")){
+            return false;
+        }else{
+            return true;
+        }
+    }
+    public static String binaryString(String a ){	//将十进制字符串转换成8位二进制字符串
+        StringBuilder sb = new StringBuilder();
+        int k = Integer.parseInt(a);
+        int flag = 1 << 7;
+        for(int m = 0;m<8;m++){
+            int n = (flag & k)==0 ? 0:1;
+            sb.append(n);
+            k <<= 1;
+        }
+        return sb.toString();
+    }
+}
+/*
+正则表达式请见：http://www.runoob.com/java/java-regular-expressions.html
+*/
