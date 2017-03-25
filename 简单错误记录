@@ -1,0 +1,100 @@
+/*
+简单错误记录:
+开发一个简单错误记录功能小模块，能够记录出错的代码所在的文件名称和行号。
+ 
+处理： 
+ 
+1、 记录最多8条错误记录，循环记录，对相同的错误记录（净文件名称和行号完全匹配）只记录一条，错误计数增加；
+ 
+2、 超过16个字符的文件名称，只记录文件的最后有效16个字符；
+ 
+3、 输入的文件可能带路径，记录文件名称不能带路径。
+
+输入描述:
+一行或多行字符串。每行包括带路径文件名称，行号，以空格隔开。
+
+输出描述:
+将所有的记录统计并将结果输出，格式：文件名 代码行数 数目，一个空格隔开，如：
+
+输入例子:
+E:\V1R2\product\fpgadrive.c   1325
+
+输出例子:
+fpgadrive.c 1325 1
+*/
+import java.util.*;
+public class Main{
+	public static void main(String[] args){
+		Scanner scan = new Scanner(System.in);
+        List<Item> list = new ArrayList<Item>();
+		while(scan.hasNext()){
+			String s = scan.nextLine();
+            String[] s1 = s.split(" ");
+            String filename = s1[0].substring(s1[0].lastIndexOf("\\")+1);
+            if(filename.length()>16){
+                filename = filename.substring(filename.length()-16);
+            }
+            int raw = Integer.parseInt(s1[1]);
+            if(list.size()==0){
+                Item item = new Item(filename,raw);
+                list.add(item);
+            }else{
+                if(!isExist(list,filename,raw)){
+                    Item item = new Item(filename,raw);
+                    list.add(item);
+                }
+            }
+		}
+        if(list.size()<=8){
+            for(Item item:list){
+                System.out.println(item.getFilename()+" "+item.getRaw()+" "+item.getNum());
+            }
+        }else{
+            for(int i = list.size()-8;i<list.size();i++){
+                Item item = list.get(i);
+                System.out.println(item.getFilename()+" "+item.getRaw()+" "+item.getNum());
+            }
+        }
+        
+	}
+    static class Item{
+        private int num = 1;
+        private String filename = null;
+        private int raw = 0;
+        public Item(String filename,int raw){
+            this.filename = filename;
+            this.raw = raw;
+        }
+        public void addNum(){
+            this.num++;
+        }
+        public int getNum(){
+            return num;
+        }
+        public String getFilename(){
+            return filename;
+        }
+        public int getRaw(){
+            return raw;
+        }
+        public boolean equalsItem(String filename,int raw){
+            if(this.getFilename().equals(filename)&&this.getRaw()==raw){
+                addNum();
+                return true;
+            }else{
+                return false;
+            }
+        }
+    }
+    public static boolean isExist(List<Item> list,String filename,int raw){
+        for(Item item : list){
+            if(item.equalsItem(filename,raw)){
+                return true;
+            }
+        }
+        return false;
+    } 
+}
+/*
+本题用到了list，用map也可以做
+*/
