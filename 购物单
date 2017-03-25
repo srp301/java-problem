@@ -35,47 +35,46 @@ v[j1]*w[j1]+v[j2]*w[j2]+…+v[jk]*w[jk]。（其中*为乘号）
 */
 import java.util.*;
 public class Main{
-	public static void main(String[] args){
-		Scanner scan = new Scanner(System.in);
-        int n = scan.nextInt();
-        int m = scan.nextInt();
+    public static void main(String[] args){
+        Scanner scan = new Scanner(System.in);
+        int n = scan.nextInt();    //总钱数
+        int m = scan.nextInt();    //总件数
         int[] v = new int[m];
         int[] p = new int[m];
-        int[] q = new int[m]
-		for(int i = 0;i<m;i++){
-            v[i] = scan.nextInt();
-            p[i] = scan.nextInt()*v[i];
-            q[i] = scan.nextInt();
+        int[] q = new int[m];
+        for(int i = 0;i<m;i++){
+            v[i] = scan.nextInt();      //价格
+            p[i] = scan.nextInt()*v[i]; //价值
+            q[i] = scan.nextInt();      //主件或附件
         }
         int maxMoney = getMoney(n,m,v,p,q);
         System.out.println(maxMoney);
-	}
+    }
     public static int getMoney(int n,int m,int[] v,int[] p,int[] q){
-        int[][] a = new int[m][n];
+        int[][] a = new int[m+1][n+1];
         for(int i =1;i<=m;i++){
             for(int j = 1;j<=n;j++){
-                if(q[i-1]==0){
-                    if(v[i]<=j){
-                    	a[i][j] = Math.max(a[i-1][j],a[i][j-v[i-1]]+p[i]);
+                if(q[i-1]==0){          //主件
+                    if(v[i-1]<=j){
+                        a[i][j] = Math.max(a[i-1][j],a[i-1][j-v[i-1]]+p[i-1]);    //状态方程
                     }
-                }else {
-                    if(v[i]+v[q[i-1]]<=j){
-                    	a[i][j] = Math.max(a[i-1][j],a[i][j-v[i-1]]+p[i]);    
+                }else {                 //附件
+                    if(v[i-1]+v[q[i-1]]<=j){
+                        a[i][j] = Math.max(a[i-1][j],a[i-1][j-v[i-1]]+p[i-1]);    //状态方程
                     }
                 }
             }
         }
-        
-        return maxMoney;
+        return a[m][n];
     }
 }
 /*
 01背包问题：
    1） 子问题定义：F[i][j]表示前i件物品中选取若干件物品放入剩余空间为j的背包中所能得到的最大价值。
-        2） 根据第i件物品放或不放进行决策，状态方程为：
+   2） 根据第i件物品放或不放进行决策，状态方程为：
                f[i][v]=max{f[i-1][v],f[i-1][v-c[i]]+w[i]}
-        其中F[i-1][j]表示前i-1件物品中选取若干件物品放入剩余空间为j的背包中所能得到的最大价值；
-        而F[i-1][j-C[i]]+W[i]表示前i-1件物品中选取若干件物品放入剩余空间为j-C[i]的背包中所能取得的最大价值加上第i件物品的价值。
-        根据第i件物品放或是不放确定遍历到第i件物品时的状态F[i][j]。
-        设物品件数为N，背包容量为V，第i件物品体积为C[i]，第i件物品价值为W[i]。
+    其中F[i-1][j]表示前i-1件物品中选取若干件物品放入剩余空间为j的背包中所能得到的最大价值；
+    而F[i-1][j-C[i]]+W[i]表示前i-1件物品中选取若干件物品放入剩余空间为j-C[i]的背包中所能取得的最大价值加上第i件物品的价值。
+    根据第i件物品放或是不放确定遍历到第i件物品时的状态F[i][j]。
+    设物品件数为N，背包容量为V，第i件物品体积为C[i]，第i件物品价值为W[i]。
 */
