@@ -1,0 +1,100 @@
+/*
+素数伴侣：
+若两个正整数的和为素数，则这两个正整数称之为“素数伴侣”，如2和5、6和13，它们能应用于通信加密。
+现在密码学会请你设计一个程序，从已有的N（N为偶数）个正整数中挑选出若干对组成“素数伴侣”，挑选方案多种多样，
+例如有4个正整数：2，5，6，13，如果将5和6分为一组中只能得到一组“素数伴侣”，而将2和5、6和13编组将得到两组“素数伴侣”，
+能组成“素数伴侣”最多的方案称为“最佳方案”，当然密码学会希望你寻找出“最佳方案”。
+输入:
+有一个正偶数N（N≤100），表示待挑选的自然数的个数。后面给出具体的数字，范围为[2,30000]。
+输出:
+输出一个整数K，表示你求得的“最佳方案”组成“素数伴侣”的对数。
+ 
+输入描述:
+输入说明
+1 输入一个正偶数n
+2 输入n个整数
+
+输出描述:
+求得的“最佳方案”组成“素数伴侣”的对数。
+
+输入例子:
+4
+2 5 6 13
+
+输出例子:
+2
+*/
+/*---------匈牙利算法-------------*/
+import java.util.*;
+public class Main {  
+    private static int[] boyfirend;  
+    public static void main(String[] args){
+        Scanner in=new Scanner(System.in);  
+        while(in.hasNext()){  
+         int n=Integer.parseInt(in.nextLine());
+            String[] input=in.nextLine().split(" ");
+            List<Integer> boys=new ArrayList<Integer>();
+            List<Integer> girls=new ArrayList<Integer>();
+            for(int i=0;i<n;i++){ 
+                int num=Integer.parseInt(input[i]);
+                if(num%2==0)
+                    boys.add(num);
+                else 
+                    girls.add(num);
+            }  
+            int count=0;
+            boyfirend=new int[girls.size()];
+            for(int i=0;i<boys.size();i++){
+                int[] used=new int[girls.size()];
+                if(find(boys.get(i),girls,used))
+                    count++;
+            }  
+            System.out.println(count);
+        }
+    }
+    private static boolean find(Integer x, List<Integer> girls, int[] used) {
+        for(int i=0;i<girls.size();i++){
+            if(used[i]==0&&isprime(x+girls.get(i))){ 
+                used[i]=1;
+                if(boyfirend[i]==0||find(boyfirend[i],girls,used)){
+                    boyfirend[i]=x;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    private static boolean isprime(int m){
+        for(int i=2;i<=Math.sqrt(m);i++)
+            if(m%i==0) {
+                return false;
+            }
+        return true;
+    }
+}
+/*
+（以下是copy的别人的分析）
+我们考虑再分析一下这个题
+注意到，每个数的取值范围是[2,30000]
+素数，除了2是偶数，其他是奇数——而现在不可能出现2了，所以我们只考虑奇数的素数
+2个数的和是奇数，有什么情况呢？
+只有奇数+偶数
+所以，我们把这些数分成2堆——奇数和偶数，然后在他们中间，和是素数的，连上一条边，然后做匹配。
+——肯定有人会说，你这个和前面的建图有什么本质不同的地方吗？
+——是没有，但是我们说明了得到的图一定是二分图，这是有意义的。
+因为对二分图的最大匹配，有一个简单很多的算法，匈牙利算法。
+
+我们先说明一下，什么是二分图。
+二分图就是，你可以把图上的点分成2堆，每堆之内的点不会有边，2堆之间，才可能连边。换句话说，一条边，必定连2个来自不同堆的点。
+现在，对每条边，一定连一个奇数，一个偶数，点能按奇数和偶数分成两部分，刚好就是二分图嘛！
+
+有关二分图匹配的匈牙利算法，具体请自行搜索，这里扯一下我个人对这个算法的理解。
+
+外层，暴力考虑左边每个点
+对枚举的每个左边的点，要找右边一个点来匹配。
+那就是对左边的点，我们看他连出去的边，或者说，能连到的右边的点
+有2种情况：
+1、右边的点没人匹配——我直接贪心匹配上去
+2、右边的点有人匹配——考虑把目前与这个右边的点 x 匹配的左边的点 pre[x]，重新匹配一个其他的点，如果成功了，那pre[x]原来匹配的点x就释放开了，我可以直接占领上去。
+最后统计匹配成功多少个左边的点就行了。
+*/
