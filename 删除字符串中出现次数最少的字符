@@ -1,0 +1,39 @@
+/*
+删除字符串中出现次数最少的字符
+实现删除字符串中出现次数最少的字符，若多个字符出现次数一样，则都删除。
+输出删除这些单词后的字符串，字符串中其它字符保持原来的顺序。
+
+输入描述:
+字符串只包含小写英文字母, 不考虑非法输入，输入的字符串长度小于等于20个字节。
+
+输出描述:
+删除字符串中出现次数最少的字符后的字符串。
+
+输入例子:
+abcdd
+
+输出例子:
+dd
+*/
+import java.util.*;
+public class Main{
+	public static void main(String[] args){
+		Scanner scan = new Scanner(System.in);
+		while(scan.hasNext()){
+			String s = scan.nextLine();
+            int min = Integer.MAX_VALUE;
+            char[] table = new char[26];
+            for(int i = 0;i<s.length();i++){
+                char c = s.charAt(i);
+                table[c-'a']++;
+                min = min > table[c-'a'] ? table[c-'a'] : min;
+            }
+            for(int i = 0;i<table.length;i++){
+                if(table[i]==min){
+                    s = s.replaceAll(String.valueOf((char)(i+97)),"");
+                }
+            }
+            System.out.println(s);
+		}
+	}
+}
