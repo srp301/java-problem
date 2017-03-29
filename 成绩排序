@@ -1,0 +1,98 @@
+/*
+成绩排序:
+查找和排序
+题目：输入任意（用户，成绩）序列，可以获得成绩从高到低或从低到高的排列,相同成绩
+      都按先录入排列在前的规则处理。
+   例示：
+   jack      70
+   peter     96
+   Tom       70
+   smith     67
+   从高到低  成绩            
+   peter     96    
+   jack      70    
+   Tom       70    
+   smith     67    
+   从低到高
+   smith     67  
+   Tom       70    
+   jack      70    
+   peter     96      
+
+输入描述:
+输入多行，先输入要排序的人的个数，然后输入一个0或者1来判定是按照成绩升序排列还是降序排列，
+然后分别输入他们的名字和成绩，以一个空格隔开
+
+输出描述:
+按照指定方式输出名字和成绩，名字和成绩之间以一个空格隔开
+
+输入例子:
+3
+0
+fang 90
+yang 50
+ning 70
+
+输出例子:
+fang 90
+ning 70
+yang 50
+*/
+import java.util.*;
+public class Main{
+    public static void main(String[] args){
+        Scanner scan = new Scanner(System.in);
+        while(scan.hasNext()){
+            int n = Integer.parseInt(scan.nextLine());
+            int flag = Integer.parseInt(scan.nextLine());
+            String s = null;
+            Student[] student = new Student[n];
+            String[] s1 = new String[2];
+            String name = null;
+            int score = 0;
+            for(int i = 0;i<n;i++){
+                s = scan.nextLine();
+                s1 = s.split(" ");
+                name = s1[0];
+                score = Integer.parseInt(s1[1]);
+                student[i] = new Student(name,score);
+            }
+            if(flag==0){//从大到小
+                for(int i=0;i<n;i++){
+                    for(int j=0;j<n-i-1;j++){
+                        if(student[j].score<student[j+1].score){
+                            exch(student,j,j+1);
+                        }
+                    }
+                }
+            }else{
+                for(int i=0;i<n;i++){
+                    for(int j=0;j<n-i-1;j++){
+                        if(student[j].score>student[j+1].score){
+                            exch(student,j,j+1);
+                        }
+                    }
+                }
+            }
+            for(int i = 0;i<student.length;i++){
+                System.out.println(student[i].name+" "+student[i].score);
+            }
+        }
+    }
+    public static void exch(Student[] a , int i ,int j){
+        Student k = a[i];
+        a[i] = a[j];
+        a[j] = k;
+    }
+}
+class Student{
+    String name;
+    int score;
+    public Student(String name,int score){
+        this.name = name;
+        this.score = score;
+    }
+}
+/*
+快速排序和选择排序一个很大的差别在于对于key-value键值对中相同的value来说，快速排序可能会改变key的先后顺序，而选择排序不会
+*/
